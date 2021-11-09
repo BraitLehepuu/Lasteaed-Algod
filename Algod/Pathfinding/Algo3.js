@@ -3,6 +3,7 @@
 const gridWidth = 10;       // Ruudustiku laius
 const gridHeight = 10;      // Ruudustiku kõrgus
 var grid = NaN;             // Ruudustik
+var speed = 100;
 
 // Funktsioon algsete olude seadmiseks
 function SetUp(){
@@ -71,6 +72,10 @@ function CreateGridArray(){
     }
     
     return array;
+}
+
+function OnSpeedChanged(value){
+
 }
 
 // ALGORITMIGA SEOTUD KOOD
@@ -144,7 +149,7 @@ async function AddToQueue(element, queue){
         tile.style.backgroundColor = "rgb(" + (140-element[2]*5) + ",0, " + (30+element[2]*5) +  ")"
     }
 
-    await new Promise(r => setTimeout(r, 100));
+    await new Promise(r => setTimeout(r, speed));
 }
 
 function PopFromQueue(){
@@ -175,7 +180,7 @@ async function DisplayPath(path){
         var tile = document.getElementById(path[i][1] + '_' + path[i][0]);
         tile.className = 'tile tile_path';
         tile.removeAttribute("style");
-        await new Promise(r => setTimeout(r, 100));
+        await new Promise(r => setTimeout(r, speed));
     }
 }
 

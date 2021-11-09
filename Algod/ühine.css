@@ -31,7 +31,7 @@ h1{
     margin: 0px;
 }
 
-#algorithm_container{
+.algorithm_container{
     width: 80vw;
     height: 60vh;
     margin-top: 100px;
@@ -39,8 +39,62 @@ h1{
     flex-direction: row;
 }
 
+.controls_container{
+    margin-top: 20px;
+    width: 60vw;
+    align-items: center;
+    flex-direction: row;
+    display: flex;
+}
+
 .text_container{
     text-align: center;
     width: 60vw;
     margin-top: 20px;
+}
+
+.button{
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    text-align: center;
+    vertical-align: middle;
+    display: flex;
+    justify-content: center;
+    border-width: 3px;
+    border-style: solid;
+    border-color: #e5ab09;
+    font-size: large;
+    transition: background-color 100ms ease-in-out;
+}
+
+.input{
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    text-align: center;
+    vertical-align: middle;
+    display: flex;
+    justify-content: center;
+    border-width: 3px;
+    border-style: solid;
+    border-color: #e5ab09;
+    font-size: large;
+    transition: background-color 100ms ease-in-out;
+    margin: 0px;
+    padding: 0px;
+}
+
+input{
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    text-align: center;
+    vertical-align: middle;
+    display: flex;
+    justify-content: center;
+    font-size: large;
+    transition: background-color 100ms ease-in-out;
+    margin: 0px;
+    padding: 0px;
 }
