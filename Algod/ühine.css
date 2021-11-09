@@ -1,17 +1,46 @@
+@font-face {
+    font-family: Raleway Heavy;
+    src: url("./Fonts/Raleway-Heavy.ttf");
+}
+
+@font-face {
+    font-family: Raleway;
+    src: url("./Fonts/Raleway-Light.ttf");
+}
+
 body{
     background-color: #0f1a26;
     align-items: center;
     text-align: center;
     margin: 0px;
     padding: 0px;
+    display: flex;
+    flex-direction: column;
 }
 
 p{
     color: #e9dcc9;
     padding: 0px;
     margin: 0px;
+    font-family: "Raleway";
 }
 
 h1{
     color: #e9dcc9;
+    font-family: "Raleway Heavy";
+}
+
+#algorithm_container{
+    width: 60vw;
+    height: 60vh;
+    margin-top: 100px;
+    border-width: 3px;
+    border-style: solid;
+    border-color: #e5ab09;
+}
+
+.text_container{
+    text-align: center;
+    width: 60vw;
+    margin-top: 20px;
 }

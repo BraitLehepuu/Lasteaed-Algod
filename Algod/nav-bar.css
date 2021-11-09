@@ -14,10 +14,10 @@
     vertical-align: middle;
     display: flex;
     justify-content: center;
-    border-radius: 5px;
+    border-width: 3px;
     border-style: solid;
     border-color: #e5ab09;
-    border-radius: 0px;
+    font-size: large;
     transition: background-color 100ms ease-in-out;
 }
 
@@ -29,5 +29,9 @@
 .bar_button_current{
     background-color: #0f1a26;
     transition: background-color 100ms ease-in-out;
+}
+
+.bar_button > h1{
+    user-select: none;
 }
 
