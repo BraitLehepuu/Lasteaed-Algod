@@ -74,6 +74,7 @@ function CreateGridArray(){
     return array;
 }
 
+// Tegeleb sammu kiiruse vahetamisega
 function OnSpeedChanged(value){
     speed = value;
 }
@@ -82,15 +83,17 @@ function OnSpeedChanged(value){
 // --------------------------------------------------------------------------------------------------------------------------------------------------
 var currentlySolving = false; // Algoritmi tööolek
 
+// Alusta algoritmiga
 function StartPathfinding(){
     currentlySolving = true;
     Pathfinding();
 }
 
+// BFS Pathfinding algoritm ise
 async function Pathfinding(){
 
     // Algsed muutujad ja nende väärtused
-    var queue = [];          // Järjekorra järjend, iga element on järjend kus on [positsioon, eelmine positsioon, mitmes järjestuses]
+    var queue = [];                             // Järjekorra järjend, iga element on järjend kus on [positsioon, eelmine positsioon, mitmes järjestuses]
     AddToQueue([[0, 0], [0, 0], 0], queue)
     
     let current_index = 0;                      // Praegune asukoht järjekorras
@@ -102,6 +105,7 @@ async function Pathfinding(){
     
     while(current_index < queue.length && currentlySolving){ // Tsükkel kuni queue (järjekorra) viimane element on kontrollitud või lõpp leitud
         current_position = queue[current_index][0]
+
         // Leia kõik praeguse positsiooniga seotud kohad ja lisa need järjekorda
         for(let i = 1; i < 3; i++){
             let x = current_position[0] + (-1)**i;
@@ -126,20 +130,24 @@ async function Pathfinding(){
             gridCopy[x][y] = true;
         }
 
+
+        // Liigu järgmise elemendi juurde järjekorras
         current_index += 1;
         PopFromQueue();
     }
 }
 
-var visualQueue = []
+var visualQueue = []            // Järjend visuaalse järjekorra jaoks
 
+// Lisa ruut visuaalsesse järjekorda ning näita
 async function AddToQueue(element, queue){
-    queue.push(element);
-    visualQueue.push('<div class="queue_item queue_unexplored"><h1>' + element[0][1] + ', ' + element[0][0] + '</h1><p>(' + element[1][1] + ', ' + element[1][0] + ')</p></div>');
+    queue.push(element); // Lisa element algoritmi järjekorda
+    visualQueue.push('<div class="queue_item queue_unexplored"><h1>' + element[0][1] + ', ' + element[0][0] + '</h1><p>(' + element[1][1] + ', ' + element[1][0] + ')</p></div>'); // Lisa element visuaalsesse järjekorda
 
-    var queue_container = document.getElementById("queue_container");
-    queue_container.innerHTML = visualQueue.join("");
+    RefreshQueue();
 
+    // Värvi ruut ruudustikus kui see pole start ega finish ruut.
+    // Värv sõltub kui mitu sammu peab tegema sellele ruudule jõudmiseks
     if(element[0].toString() != [0,0].toString() && element[0].toString() != [gridHeight-1,gridWidth-1].toString()){
         var tile = document.getElementById(element[0][1] + "_" + element[0][0]);
         tile.className = "tile tile_checked";
@@ -149,23 +157,31 @@ async function AddToQueue(element, queue){
     await new Promise(r => setTimeout(r, speed));
 }
 
+// Tühjenda visuaalne järjekord
 function EmptyQueue(){
     visualQueue = []
+    RefreshQueue();
+}
+
+// Eemalda esimene element visuaalsest järjekorrast
+function PopFromQueue(){
+    visualQueue.shift();
+    RefreshQueue();
+}
+
+// Uuenda visuaalset järjekorda ekraanil
+function RefreshQueue(){
     var queue_container = document.getElementById("queue_container");
     queue_container.innerHTML = "";
 }
 
-function PopFromQueue(){
-    visualQueue.shift();
-    var queue_container = document.getElementById("queue_container");
-    queue_container.innerHTML = visualQueue.join("");
-}
-
+// Kui teekond leitakse, tee järjekord tee järjendiks
 function PathFound(queue){
     var current_index = queue.length-1;
     var current_position = queue[current_index][1];
     var path = [queue[current_index][0]];
 
+    // Otsi üles kõik teel olevad ruudud
     while(current_position.toString() != [0, 0].toString()){
         if(queue[current_index][0] == current_position){
             path.push(queue[current_index][0]);
@@ -175,9 +191,11 @@ function PathFound(queue){
         current_index -= 1;
     }
 
+    // Näita teekonda ekraanil
     DisplayPath(path);
 }
 
+// Näita teekonda ruudustikul värvides need roheliseks
 async function DisplayPath(path){
     for(let i = path.length-1; i >= 1; i--){
         var tile = document.getElementById(path[i][1] + '_' + path[i][0]);
@@ -187,6 +205,7 @@ async function DisplayPath(path){
     }
 }
 
+// Vii algoritm ja ruudustik algstaadiumisse
 function ResetPathfinding(){
     currentlySolving = false;
     EmptyQueue();
