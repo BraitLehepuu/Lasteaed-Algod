@@ -21,7 +21,7 @@ function DisplayGrid(){
         grid_html.push('<div class="grid_column">');
         for(var i = 0; i < gridWidth; i++){
             if(i === 0 && j === 0){
-                grid_html.push('<div class="tile tile_start" id="' + i + '_' + j + '" onclick="StartPathfinding()"><h1>Start</h1></div>'); // Paneb paika start ruudu
+                grid_html.push('<div class="tile tile_start" id="' + i + '_' + j + '"><h1>Start</h1></div>'); // Paneb paika start ruudu
             }
             else if(i === gridHeight - 1 && j === gridWidth - 1){
                 grid_html.push('<div class="tile tile_finish" id="' + i + '_' + j + '"><h1>Finish</h1></div>'); // Paneb paika finish ruudu
@@ -75,7 +75,7 @@ function CreateGridArray(){
 }
 
 function OnSpeedChanged(value){
-
+    speed = value;
 }
 
 // ALGORITMIGA SEOTUD KOOD
@@ -100,7 +100,7 @@ async function Pathfinding(){
     var path_found = false;                     // Kas tee on leitud
 
     
-    while(current_index < queue.length){ // Tsükkel kuni queue (järjekorra) viimane element on kontrollitud või lõpp leitud
+    while(current_index < queue.length && currentlySolving){ // Tsükkel kuni queue (järjekorra) viimane element on kontrollitud või lõpp leitud
         current_position = queue[current_index][0]
         // Leia kõik praeguse positsiooniga seotud kohad ja lisa need järjekorda
         for(let i = 1; i < 3; i++){
@@ -129,9 +129,6 @@ async function Pathfinding(){
         current_index += 1;
         PopFromQueue();
     }
-
-    console.log("No path");
-    ResetPathfinding();
 }
 
 var visualQueue = []
@@ -150,6 +147,12 @@ async function AddToQueue(element, queue){
     }
 
     await new Promise(r => setTimeout(r, speed));
+}
+
+function EmptyQueue(){
+    visualQueue = []
+    var queue_container = document.getElementById("queue_container");
+    queue_container.innerHTML = "";
 }
 
 function PopFromQueue(){
@@ -186,5 +189,6 @@ async function DisplayPath(path){
 
 function ResetPathfinding(){
     currentlySolving = false;
+    EmptyQueue();
     SetUp();
 }

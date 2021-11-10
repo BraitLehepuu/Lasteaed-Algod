@@ -68,6 +68,11 @@ h1{
     transition: background-color 100ms ease-in-out;
 }
 
+.button:hover{
+    background-color: #02364c;
+    transition: background-color 100ms ease-in-out;
+}
+
 .input{
     height: 100%;
     width: 100%;

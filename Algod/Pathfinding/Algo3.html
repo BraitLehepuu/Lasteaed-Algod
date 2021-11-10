@@ -13,24 +13,31 @@
             <div class="bar_button" onclick="location.href='../avaleht.html'"> <h1>Avaleht</h1> </div>
             <div class="bar_button" onclick="location.href='../Bubblesort/Algo1.html'"> <h1>Bubble sort</h1> </div>
             <div class="bar_button" onclick="location.href='../Quicksort/Algo2.html'"> <h1>Quick sort</h1> </div>
-            <div class="bar_button bar_button_current" onclick="location.href='./Algo3.html'"> <h1>Pathfinding</h1> </div>
+            <div class="bar_button bar_button_current" onclick="location.href='./Algo3.html'"> <h1>BFS Pathfinding</h1> </div>
         </div>
 
         <div class="algorithm_container">
-            <div id="queue_container">
+            <div>
+                <div id="queue_container">
+                </div>
+                <h1>Queue</h1>
             </div>
             <div id="grid_container">
             </div>
         </div>
 
         <div class="controls_container">
-            <div class="button"><p>Start</p></div>
+            <div class="button" onclick="StartPathfinding()"><p>Start</p></div>
             <div class="input"><input onchange="OnSpeedChanged(this.value)" type="text" placeholder="sammu kiirus(ms)"></div>
-            <div class="button"><p>Restart</p></div>
+            <div class="button" onclick="ResetPathfinding()"><p>Restart</p></div>
         </div>
 
         <div class="text_container">
-            <p>Tekst algoritmi kohta läheb siia</p>
+            <p>
+                BFS (Breath First Search) Pathfinding on pathfinding algoritm, mis töötab järjekorra (queue) põhimõttel. Uuritakse järjekorras esimest ruutu, mille naaberruute kontrollitakse ning siis lisatakse järjekorra lõppu. Seejärel uuritakse järgmist ruutu järjekorras. Seda korratakse kuni leitakse lõpp ruut. Seejärel saab kokku panna salvestatud järjekorra põhjal teekonna, mida järgides saab algusest lõppu.
+                <br>BFS Pathfinding leiab alati lühima tee stardi ja finishi vahel, kuid ei leia seda nii kiirelt kui leiavad mõned teised pathfinding algorithmid (näiteks A*).
+                <br>BFS Pathfindingu kohta saad juurde lugeda <a href="https://en.wikipedia.org/wiki/Breadth-first_search">siit.</a> 
+            </p>
         </div>
     </body>
 </html>
