@@ -3,11 +3,12 @@
     <head>
         <link rel="stylesheet" href="../ühine.css">
         <link rel="stylesheet" href="../nav-bar.css">
+        <link rel="stylesheet" href="./Algo2.css">
     </head>
 
     <script tyh1e="text/javascrih1t" src="./Algo2.js"></script>
 
-    <body>
+    <body onload="SetUp()">
         <div class="bar">
             <div class="bar_button" onclick="location.href='../avaleht.html'"> <h1>Avaleht</h1> </div>
             <div class="bar_button" onclick="location.href='../Bubblesort/Algo1.html'"> <h1>Bubble sort</h1> </div>
@@ -25,8 +26,18 @@
             </div>
         </div>
 
+        <div class="controls_container">
+            <div class="button" onclick="StartQuicksort()"><p>Start</p></div>
+            <div class="input"><input onchange="OnSpeedChanged(this.value)" type="text" placeholder="sammu kiirus(ms)"></div>
+            <div class="button" onclick="ResetQuicksort()"><p>Restart</p></div>
+        </div>
+
         <div class="text_container">
-            <p>Tekst algoritmi kohta läheb siia</p>
+            <p>Quicksort on sorteerimisalgoritm, mis töötab jaga-ja-valitse (divide-and-conquer) põhimõttel. Algoritm valib sorteerimata reas ühe elemendi, mida kasutab etalonina (pivot), viib kõik temast väiksemad elemendid ühele ja suuremad teisele poole, ning jätkab tööd rekursiivselt, kuni kõik elemendid on sorteeritud.</p>
+            <p>Quicksort kasutab elementide asukohtade vahetamiseks reas kahte pointerit, mille osutatavad elemendid vahetuvad, kui vasakpoolne on pivotist suurem ja parempoolne on väiksem. Pointerid liiguvad reas järjest üksteise poole.</p>
+            <p>Kui pointerid kohtuvad, algab sorteerimine uuesti eraldi pivotist vasakul asuva poole peal ning parema poole peal. Lõpus pannakse tekkinud sorteeritud lõigud kokku.</p>
+            <p>Quicksort on keerulisem ja kiirem kui Bubblesort: kui Bubblesortil kulub n elemendi sorteerimiseks keskmiselt nn võrdlemist, siis Quicksortil kulub keskmiselt n log n võrdlemist.</p>
+            <p>Nüüd, kui ma oskaksin seda implementeerida ka, oleks hoopis tore.</p>
         </div>
     </body>
 </html>
