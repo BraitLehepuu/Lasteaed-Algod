@@ -20,11 +20,10 @@ function DisplayGrid(){
     for(var j = 0; j = gridHeight; j++){ // Muutuja gridHeight on 1, aga võib-olla saab sorteerimist mingil moel ruudustikus ka teha.
         grid_html.push('<div class="grid_column">');
         for(var i = 0; i < gridWidth; i++){
-            len = grid_html.push('<div class="tile tile_empty" id="' + i + '<h1></h1></div>'); // Nimetab ruudud, h1 vahele peaks lisama ' + i + '.
-        }
-    }
-    len = grid_html.push('</div>');
-    
+            len = grid_html.push('<div class="tile tile_empty" id="' + i + '"<h1>' + i + '</h1></div>'); // Nimetab ruudud
+        } // Ma arvan, et mäluleket põhjustab mul see 23. rida või vähemalt see funktsioon. Mida ma valesti teen? Või teen mujal?
+        len = grid_html.push('</div>');
+    }  
 
     grid_container.innerHTML = grid_html.join(""); // Paneb sõne html-faili
 }
@@ -33,7 +32,7 @@ function DisplayGrid(){
 function CreateGridArray(){
     var array = [];
 
-    for(var j = 0; j = gridHeight; j++){
+    for(let i = 0; i = gridHeight; i++){
         array.push(Array(gridWidth));
     }
 
@@ -47,7 +46,6 @@ function OnSpeedChanged(value){
 
 // ALGORITMIGA SEOTUD KOOD
 // --------------------------------------------------------------------------------------------------------------------------------------------------
-var currentlySolving = false; // Algoritmi tööolek
 
 // Alustab algoritmiga
 function StartQuicksort(){
@@ -59,13 +57,13 @@ function StartQuicksort(){
 async function Quicksort(){
 
     // Algsed muutujad ja nende väärtused
-    var queue = []; // Selle ma pean ümber tegema.
+    var queue = []; // Selle ma pean ümber tegema, sest see vist ei tööta.
     var rida = []; // Siia me lisame sorteeritavad arvud.
     for(var arv = 0; arv < gridWidth; arv++){ // Genereerime arvud juhuslikult.
         rida.push(Math.floor(Math.random() * 100));
     }
     var pivot = Math.floor(rida.length/2);
-    AddToQueue(pivot, queue);
+    AddToQueue(pivot, queue); // Kas see käib nii?
     var pointer1 = 0;
     AddToQueue(pointer1, queue);
     var pointer2 = rida.length-1; // Ma ei salli nende semikoolonite rohkust kohe üldse.
@@ -81,7 +79,7 @@ async function Sort(rida, pivot, pointer1, pointer2){ // Sorteerimine ise
         if(uusrida.length>1){
             Sort(uusrida, Math.floor(uusrida.length/2), 0, uusrida.length-1);
         }
-        if(teinerida.length>1){
+        if(teinerida.length>1){ //Siin satuvad pointerid visuaalis vist vale koha peale. Kuidas ümber teha?
             Sort(teinerida, Math.floor(teinerida.length/2), 0, teinerida.length-1);
         }
         const valmisrida = uusrida.concat(teinerida);
@@ -110,14 +108,14 @@ async function Sort(rida, pivot, pointer1, pointer2){ // Sorteerimine ise
 
 var visualQueue = []            // Järjend visuaalse järjekorra jaoks - Ma pean endalt küsima, kas seda on ka vaja.
 
-// Lisab ruudu visuaalsesse järjekorda ning näita
+// Lisab ruudu visuaalsesse järjekorda ning näitab
 async function AddToQueue(element, queue){
     queue.push(element); // Lisa element algoritmi järjekorda
-    visualQueue.push('<div class="queue_item queue_unexplored"><h1></h1><p>' + element[0] + ', ' + element[1] + '</p></div>'); // Lisa element visuaalsesse järjekorda - Ma pean seda veel harjutama, see ei ole õige, ja h1 vahele peaks vist lisama ' + element[0] + ', ' + element[1] + '.
+    visualQueue.push('<div class="queue_item queue_unexplored"><h1></h1><p>(' + element + ')</p></div>'); // Lisa element visuaalsesse järjekorda - Ma pean seda veel harjutama, see ei ole õige, ja h1 vahele peaks vist lisama ' + element[0] + ', ' + element[1] + '.
 
     RefreshQueue();
 
-    // Värvib ruudu reas, kui see on pivot ja/või pointer.
+    // Värvib ruudu reas, kui see on pivot ja/või pointer - ma olen päris kindel, et see ei tööta nii ega ole päris nii lihtne.
     for(var k=0; k<queue.length; k++){
         if(queue[k]=pivot){
         var tile = document.getElementById(element[0]);
@@ -155,3 +153,5 @@ function ResetQuicksort(){
     EmptyQueue();
     SetUp();
 }
+
+//Jah, aga mul praegu ju mingit visuaali ei olegi.
