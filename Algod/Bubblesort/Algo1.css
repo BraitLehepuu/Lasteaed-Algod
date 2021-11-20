@@ -29,3 +29,11 @@
     align-items: center;
 }
 
+.controls{
+    width: 50vw;
+    height: 10vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-items: left;
+}
