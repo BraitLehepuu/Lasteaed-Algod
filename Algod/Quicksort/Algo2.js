@@ -4,6 +4,9 @@ const gridWidth = 10;      // Ruudustiku laius. Ma pean seda proovima paljude er
 const gridHeight = 1;      // Ruudustiku kõrgus. Üksainus rida.
 var grid = NaN;            // Ruudustik
 var speed = 200;
+var pivot = 0;
+var pointer1 = 0;
+var pointer2 = 0;
 
 // Funktsioon algsete olude seadmiseks
 function SetUp(){
@@ -56,25 +59,24 @@ function StartQuicksort(){
 async function Quicksort(){
 
     // Algsed muutujad ja nende väärtused
-    var queue = []; // Selle ma pean ümber tegema, sest see vist ei tööta.
     var rida = []; // Siia me lisame sorteeritavad arvud.
     for(var arv = 0; arv < gridWidth; arv++){ // Genereerime arvud juhuslikult.
         rida.push(Math.floor(Math.random() * 100));
         document.getElementById(arv).innerHTML = '<h1>' + rida[arv] + '</h1>'; // Asetab arvud visuaalselt ritta. Need on sorteerimata.
     }
-    let pivot = Math.floor((rida.length)/2); //Programm ei saa aru, et pivot on siin defineeritud.
+    pivot = Math.floor((rida.length)/2); //Programm ei saa aru, et pivot on siin defineeritud.
     colour(pivot);
     var pointer1 = 0;
-    // AddToQueue(pointer1, queue);
+    colour(pointer1);
     var pointer2 = rida.length-1; // Ma ei salli nende semikoolonite rohkust kohe üldse.
-    // AddToQueue(pointer2, queue);
+    colour(pointer2);
     Sort(rida, pivot, pointer1, pointer2);
 } // Sorteerimisfunktsioon on rekursiivne, aga selle päises ei tohiks kogu aeg uusi muutujaid deklareerida.
 
 async function Sort(rida, pivot, pointer1, pointer2){ // Sorteerimine ise
     if(pointer1 >= pointer2){ // Sel juhul on sorteerimine selleks korraks otsas. Jätkub rekursioon, need tulemused pannakse uuesti kokku.
         EmptyQueue();
-        const uusrida = rida.slice(pivot+1);
+        const uusrida = rida.slice(pivot+1); // Ma pean pointereid liigutama.
         const teinerida = rida.slice(0, pivot+1);
         if(uusrida.length>1){
             Sort(uusrida, Math.floor(uusrida.length/2), 0, uusrida.length-1);
@@ -93,43 +95,15 @@ async function Sort(rida, pivot, pointer1, pointer2){ // Sorteerimine ise
         document.getElementById(pointer1).innerHTML = '<h1>' + rida[pointer1] + '</h1>';
         document.getElementById(pointer2).innerHTML = '<h1>' + rida[pointer2] + '</h1>';
         pointer1 = pointer1+1;
-        // AddToQueue(pointer1, queue);
         pointer2 = pointer2-1;
-        // AddToQueue(pointer2, queue);
         Sort(rida, pivot, pointer1, pointer2);
     } else if(pivot<rida[pointer2]){ // Ja muidu ta neid ei vaheta, liigub lihtsalt edasi.
         pointer2 = pointer2-1;
-        // AddToQueue(pointer2, queue); // Tegelikult ma ei tea, mida see funktsioon siin teeb.
         if(rida[pointer1]<pivot){
             pointer1 = pointer1+1
-            // AddToQueue(pointer1, queue);
         }
         Sort(rida, pivot, pointer1, pointer2);
         }
-}
-
-var visualQueue = []            // Järjend visuaalse järjekorra jaoks - Ma pean endalt küsima, kas seda on ka vaja.
-
-// Lisab ruudu visuaalsesse järjekorda ning näitab
-async function AddToQueue(element, queue){
-    queue.push(element); // Lisa element algoritmi järjekorda
-    visualQueue.push('<div class="queue_item queue_unexplored"><h1>' + element + '</h1><p>(' + element + ')</p></div>'); // Lisa element visuaalsesse järjekorda - Ma pean seda veel harjutama, see ei ole õige, ja h1 vahele peaks vist lisama ' + element[0] + ', ' + element[1] + '.
-
-    RefreshQueue();
-
-    // Värvib ruudu reas, kui see on pivot ja/või pointer - ma olen päris kindel, et see ei tööta nii ega ole päris nii lihtne.
-    for(var k=0; k<queue.length; k++){
-        if(queue[k]==pivot){
-        var tile = document.getElementById(element[0]);
-        tile.style.backgroundColor = "rgb(30,0,140)";
-        }
-        if(queue[k]==pointer1 || queue[k]==pointer2){
-            var tile = document.getElementById(element[0]);
-            tile.style.borderBlockColor = "rgb(140,0,30)";
-        }
-    }
-
-    await new Promise(r => setTimeout(r, speed));
 }
 
 // Värvib ruudu, mis on pivot või pointer.
@@ -141,24 +115,6 @@ function colour(element){
         var tile = document.getElementById(element);
         tile.style.borderBlockColor = "rgb(140,0,30)";
     }
-}
-
-// Tühjendab visuaalse järjekorra
-function EmptyQueue(){
-    visualQueue = []
-    RefreshQueue();
-}
-
-// Eemaldab esimese elemendi visuaalsest järjekorrast
-function PopFromQueue(){
-    visualQueue.shift();
-    RefreshQueue();
-}
-
-// Uuendab visuaalset järjekorda ekraanil
-function RefreshQueue(){
-    var queue_container = document.getElementById("queue_container");
-    queue_container.innerHTML = "";
 }
 
 // Viib algoritmi ja meie rea algstaadiumisse
