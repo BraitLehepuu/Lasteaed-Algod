@@ -3,8 +3,14 @@
     <head>
         <link rel="stylesheet" href="../ühine.css">
         <link rel="stylesheet" href="../nav-bar.css">
+        <link rel='stylesheet' href='Algo1.css'
+        
     </head>
-    <body>
+
+    <script src='Algo1.js'></script>
+
+    <body onload=CreateRow()>
+       
         <div class="bar">
             <div class="bar_button" onclick="location.href='../avaleht.html'"> <h1>Avaleht</h1> </div>
             <div class="bar_button bar_button_current" onclick="location.href='./Algo1.html'"> <h1>Bubble sort</h1> </div>
@@ -12,7 +18,10 @@
             <div class="bar_button" onclick="location.href='../Pathfinding/Algo3.html'"> <h1>BFS Pathfinding</h1> </div>
         </div>
 
-        <div id="algorithm_container"></div>
+        <div class="algorithm_container2">
+            <div id='row_container'>   
+            </div>
+        </div>
 
         <div class="text_container">
             <p>Tekst algoritmi kohta läheb siia</p>
