@@ -17,11 +17,11 @@ function DisplayGrid(){
 
     // Teeb iga ruudu jaoks ühe HTML sõne
     var grid_html = []
-    for(var j = 0; j = gridHeight; j++){ // Muutuja gridHeight on 1, aga võib-olla saab sorteerimist mingil moel ruudustikus ka teha.
+    for(var j = 0; j < gridHeight; j++){ // Muutuja gridHeight on 1, aga võib-olla saab sorteerimist mingil moel ruudustikus ka teha.
         grid_html.push('<div class="grid_column">');
         for(var i = 0; i < gridWidth; i++){
-            len = grid_html.push('<div class="tile tile_empty" id="' + i + '"<h1>' + i + '</h1></div>'); // Nimetab ruudud
-        } // Ma arvan, et mäluleket põhjustab mul see 23. rida või vähemalt see funktsioon. Mida ma valesti teen? Või teen mujal?
+            len = grid_html.push('<div class="tile tile_empty" id="' + i + '"><h1>' + i + '</h1></div>'); // Nimetab ruudud
+        }
         len = grid_html.push('</div>');
     }  
 
@@ -32,7 +32,7 @@ function DisplayGrid(){
 function CreateGridArray(){
     var array = [];
 
-    for(let i = 0; i = gridHeight; i++){
+    for(let i = 0; i < gridHeight; i++){
         array.push(Array(gridWidth));
     }
 
@@ -49,8 +49,7 @@ function OnSpeedChanged(value){
 
 // Alustab algoritmiga
 function StartQuicksort(){
-    Quicksort
-();
+    Quicksort();
 }
 
 // Quicksort-algoritm ise
@@ -61,13 +60,14 @@ async function Quicksort(){
     var rida = []; // Siia me lisame sorteeritavad arvud.
     for(var arv = 0; arv < gridWidth; arv++){ // Genereerime arvud juhuslikult.
         rida.push(Math.floor(Math.random() * 100));
+        document.getElementById(arv).innerHTML = '<h1>' + rida[arv] + '</h1>'; // Asetab arvud visuaalselt ritta. Need on sorteerimata.
     }
-    var pivot = Math.floor(rida.length/2);
-    AddToQueue(pivot, queue); // Kas see käib nii?
+    let pivot = Math.floor((rida.length)/2); //Programm ei saa aru, et pivot on siin defineeritud.
+    colour(pivot);
     var pointer1 = 0;
-    AddToQueue(pointer1, queue);
+    // AddToQueue(pointer1, queue);
     var pointer2 = rida.length-1; // Ma ei salli nende semikoolonite rohkust kohe üldse.
-    AddToQueue(pointer2, queue);
+    // AddToQueue(pointer2, queue);
     Sort(rida, pivot, pointer1, pointer2);
 } // Sorteerimisfunktsioon on rekursiivne, aga selle päises ei tohiks kogu aeg uusi muutujaid deklareerida.
 
@@ -90,17 +90,19 @@ async function Sort(rida, pivot, pointer1, pointer2){ // Sorteerimine ise
         var žonglöör = rida[pointer2];
         rida[pointer2] = rida [pointer1];
         rida[pointer1] = žonglöör;
+        document.getElementById(pointer1).innerHTML = '<h1>' + rida[pointer1] + '</h1>';
+        document.getElementById(pointer2).innerHTML = '<h1>' + rida[pointer2] + '</h1>';
         pointer1 = pointer1+1;
-        AddToQueue(pointer1, queue);
+        // AddToQueue(pointer1, queue);
         pointer2 = pointer2-1;
-        AddToQueue(pointer2, queue);
+        // AddToQueue(pointer2, queue);
         Sort(rida, pivot, pointer1, pointer2);
     } else if(pivot<rida[pointer2]){ // Ja muidu ta neid ei vaheta, liigub lihtsalt edasi.
         pointer2 = pointer2-1;
-        AddToQueue(pointer2, queue); // Tegelikult ma ei tea, mida see funktsioon siin teeb.
+        // AddToQueue(pointer2, queue); // Tegelikult ma ei tea, mida see funktsioon siin teeb.
         if(rida[pointer1]<pivot){
             pointer1 = pointer1+1
-            AddToQueue(pointer1, queue);
+            // AddToQueue(pointer1, queue);
         }
         Sort(rida, pivot, pointer1, pointer2);
         }
@@ -111,13 +113,13 @@ var visualQueue = []            // Järjend visuaalse järjekorra jaoks - Ma pea
 // Lisab ruudu visuaalsesse järjekorda ning näitab
 async function AddToQueue(element, queue){
     queue.push(element); // Lisa element algoritmi järjekorda
-    visualQueue.push('<div class="queue_item queue_unexplored"><h1></h1><p>(' + element + ')</p></div>'); // Lisa element visuaalsesse järjekorda - Ma pean seda veel harjutama, see ei ole õige, ja h1 vahele peaks vist lisama ' + element[0] + ', ' + element[1] + '.
+    visualQueue.push('<div class="queue_item queue_unexplored"><h1>' + element + '</h1><p>(' + element + ')</p></div>'); // Lisa element visuaalsesse järjekorda - Ma pean seda veel harjutama, see ei ole õige, ja h1 vahele peaks vist lisama ' + element[0] + ', ' + element[1] + '.
 
     RefreshQueue();
 
     // Värvib ruudu reas, kui see on pivot ja/või pointer - ma olen päris kindel, et see ei tööta nii ega ole päris nii lihtne.
     for(var k=0; k<queue.length; k++){
-        if(queue[k]=pivot){
+        if(queue[k]==pivot){
         var tile = document.getElementById(element[0]);
         tile.style.backgroundColor = "rgb(30,0,140)";
         }
@@ -128,6 +130,17 @@ async function AddToQueue(element, queue){
     }
 
     await new Promise(r => setTimeout(r, speed));
+}
+
+// Värvib ruudu, mis on pivot või pointer.
+function colour(element){
+    if (element==pivot){
+        var tile = document.getElementById(element)
+        tile.style.backgroundColor = "rgb(30,0,140)";
+    } else if(element==pointer1 || element==pointer2){
+        var tile = document.getElementById(element);
+        tile.style.borderBlockColor = "rgb(140,0,30)";
+    }
 }
 
 // Tühjendab visuaalse järjekorra
@@ -153,5 +166,3 @@ function ResetQuicksort(){
     EmptyQueue();
     SetUp();
 }
-
-//Jah, aga mul praegu ju mingit visuaali ei olegi.
