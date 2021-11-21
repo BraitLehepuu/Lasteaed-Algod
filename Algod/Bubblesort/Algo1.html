@@ -1,16 +1,18 @@
-<!DOCTYh1E html>
+<!DOCTYPE html>
 <html>
     <head>
         <link rel="stylesheet" href="../ühine.css">
         <link rel="stylesheet" href="../nav-bar.css">
         <link rel='stylesheet' href='Algo1.css'
-        
+    
     </head>
 
-    <script src='Algo1.js'></script>
+    
 
     <body onload=CreateRow()>
-       
+
+        <script src='Algo1.js'></script>
+
         <div class="bar">
             <div class="bar_button" onclick="location.href='../avaleht.html'"> <h1>Avaleht</h1> </div>
             <div class="bar_button bar_button_current" onclick="location.href='./Algo1.html'"> <h1>Bubble sort</h1> </div>
@@ -21,10 +23,13 @@
         <div class="algorithm_container2">
             <div id='row_container'>   
             </div>
+            <div id='cycles'>
+            </div>
         </div>
 
         <div class='controls'>
             <div class="button" onclick=StartSort()><p>Start</p></div>
+            <div class='button' onclick=Restart()><p>Restart</p></div>
         </div>
 
         <div class="text_container">
