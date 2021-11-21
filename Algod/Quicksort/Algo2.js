@@ -70,8 +70,10 @@ function Quicksort(){
     Sort(rida, pivot, pointer1, pointer2, 0);
 } // Sorteerimisfunktsioon on rekursiivne, aga selle päises ei tohiks kogu aeg uusi muutujaid deklareerida.
 
-async function Sort(rida, pivot, pointerüks, pointerkaks, shift){ // Sorteerimine ise
-    await new Promise(r => setTimeout(r, speed));
+function Sort(rida, pivot, pointerüks, pointerkaks, shift){ // Sorteerimine ise
+    // await new Promise(r => setTimeout(r, speed));
+    if (rida.length==1){pivotready(0)}
+    else {
     console.log(rida[pivot]);
     console.log(shift);
     if(pointerüks >= pointerkaks){ // Sel juhul on sorteerimine selleks korraks otsas. Jätkub rekursioon.
@@ -99,7 +101,7 @@ async function Sort(rida, pivot, pointerüks, pointerkaks, shift){ // Sorteerimi
         // movepointer(pointerüks, shift); // Neid ilmselt ei lähe vaja.
         // movepointer(pointerkaks, shift);
         Sort(rida, pivot, pointer1, pointer2, shift);
-    } else if(rida[pivot]<rida[pointerkaks]){ // Ja muidu ta neid ei vaheta, liigub lihtsalt edasi.
+    } else if((rida[pivot]<rida[pointerkaks])){ // Ja muidu ta neid ei vaheta, liigub lihtsalt edasi.
         console.log("Jõudsin siia 2");
         movepointer(pointerkaks, shift);
         if(rida[pointer1]<rida[pivot]){
@@ -114,6 +116,7 @@ async function Sort(rida, pivot, pointerüks, pointerkaks, shift){ // Sorteerimi
             console.log("Sorteerin");
             Sort(rida, pivot, pointer1, pointer2, shift);
         }
+    }
 }
 
 // Jagab osaliselt sorteeritud rea kaheks alamreaks
@@ -123,21 +126,17 @@ function divide(rida, pivot, shift){
         var teinerida = rida.slice(0, pivot);
         pivotready(pivot)
         if (uusrida.length>1 || teinerida.length>1){
-            if(uusrida.length>1){
                 console.log("Sorteerin uutrida");
                 console.log(uusrida);
                 pointer1=0;
                 pointer2=uusrida.length-1;
                 Sort(uusrida, Math.floor(uusrida.length/2), 0, uusrida.length-1, shift+teinerida.length+1); // Shift suureneb: paremal pool oleva rea pointerite ja pivoti visualiseerimine käib rohkem paremal. Märkus: teinerida.length+1 on see õige nihe, mida kasutada, et visuaal oleks õige.
-            } else {valmisrida(uusrida.length, shift)}
-            if(teinerida.length>1){ // Siinpool on lihtne, sest kõik toimub ikka vasakul ja teiserea vasakpoolne on kogu rea vasakpoolne.
                 console.log("Sorteerin teistrida");
                 console.log(teinerida);
                 pointer1=0;
                 pointer2=teinerida.length-1;
-                Sort(teinerida, Math.floor(teinerida.length/2), 0, teinerida.length-1, shift);
-            } else {valmisrida(teinerida.length, shift)}
-        }
+                Sort(teinerida, Math.floor(teinerida.length/2), 0, teinerida.length-1, shift); // Siinpool on lihtne, sest kõik toimub ikka vasakul ja teiserea vasakpoolne on kogu rea vasakpoolne.
+        } else{valmisrida(0, shift)}
 }
 
 // Värvib ruudu, mis on pivot või pointer.
@@ -178,7 +177,7 @@ async function movepointer(pointer, shift){
 
 // Kui sorteerimine saab valmis
 async function valmisrida(rida, shift){
-    for(let i=shift; i<rida; i++){
+    for(let i=0; i<gridWidth; i++){
         var tile = document.getElementById(i);
         tile.style.backgroundColor = "rgb(0,128,0)";
     }
