@@ -33,7 +33,7 @@
     display: flex;
     justify-content: center;
     user-select: none;
-    background-color: forestgreen;
+    background-color: rgb(36, 185, 36);
 }
 
 .tile_noswap{
@@ -49,7 +49,7 @@
     display: flex;
     justify-content: center;
     user-select: none;
-    background-color: red;
+    background-color: rgb(211, 21, 21);
 }
 
 .algorithm_container2{

@@ -108,6 +108,9 @@ async function ShowStep(index, swap){
     if(swap == 'y'){
         var tile_1 = document.getElementById(index);
         var tile_2 = document.getElementById(index+1);
+        tile_1.innerHTML = '<div class="tile_swap" id="' + index + '"><h1>' + array_[index+1] + '</h1></div>';
+        tile_2.innerHTML = '<div class="tile_swap" id="' + (index+1) + '"><h1>' + array_[index] + '</h1></div>';
+        await new Promise(r => setTimeout(r, ms/2))
         tile_1.innerHTML = '<div class="tile_swap" id="' + index + '"><h1>' + array_[index] + '</h1></div>';
         tile_2.innerHTML = '<div class="tile_swap" id="' + (index+1) + '"><h1>' + array_[index+1] + '</h1></div>';
     }
