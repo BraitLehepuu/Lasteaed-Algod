@@ -3,11 +3,10 @@
 const gridWidth = 10; // Ruudustiku laius. Ma pean seda proovima paljude erinevate numbritega.
 const gridHeight = 1; // Ruudustiku kõrgus. Üksainus rida.
 var grid = NaN;       // Ruudustik
-var speed = 1000;
+var speed = 2000;
 var pivot = 0;        // Need kolm on siin selle pärast, et iga funktsioon allpool neid üheselt mõistaks. Need hakkavad ohtralt muutuma.
 var pointer1 = 0;
-var pointer2 = 0;
-var shift = 0;        // Shift määrab, kus visuaalis pointerid ja pivot asuvad.
+var pointer2 = 0;     // Ja shift määrab, kus visuaalis pointerid ja pivot asuvad.
 
 // Funktsioon algsete olude seadmiseks
 function SetUp(){
@@ -53,7 +52,7 @@ function OnSpeedChanged(value){speed = value}
 function StartQuicksort(){Quicksort()}
 
 // Quicksort-algoritm ise. Konsooli tulevad debugimiseks vajalikud asjad ehk mis klausleid programm läbib ja mis järjekorras.
-async function Quicksort(){
+function Quicksort(){
 
     // Algsed muutujad ja nende väärtused
     var rida = []; // Siia me lisame sorteeritavad arvud.
@@ -68,42 +67,23 @@ async function Quicksort(){
     colour(pointer1, 0);
     pointer2 = rida.length-1; // Ma ei salli nende semikoolonite rohkust kohe üldse.
     colour(pointer2, 0);
-    Sort(rida, pivot, pointer1, pointer2, shift);
+    Sort(rida, pivot, pointer1, pointer2, 0);
 } // Sorteerimisfunktsioon on rekursiivne, aga selle päises ei tohiks kogu aeg uusi muutujaid deklareerida.
 
-function Sort(rida, pivot, pointerüks, pointerkaks, shift){ // Sorteerimine ise
-    console.log(rida[pivot])
-    if(pointerüks >= pointerkaks){ // Sel juhul on sorteerimine selleks korraks otsas. Jätkub rekursioon, need tulemused pannakse uuesti kokku.
-        console.log("Jõudsin siia 0")
-        var uusrida = rida.slice(pivot+1); // Ma pean pointereid liigutama.
-        var teinerida = rida.slice(0, pivot);
-        discolour(pivot, shift)
-        if (uusrida.length>1 || teinerida.length>1){
-            if(uusrida.length>1){
-                console.log("Sorteerin uutrida");
-                console.log(uusrida);
-                pointer1=0;
-                pointer2=uusrida.length-1;
-                Sort(uusrida, Math.floor(uusrida.length/2), 0, uusrida.length-1, shift+teinerida.length); // Shift suureneb: paremal pool oleva rea pointerite ja pivoti visualiseerimine käib rohkem paremal.
-            }
-            if(teinerida.length>1){ // Siinpool on lihtne, sest kõik toimub ikka vasakul ja teiserea vasakpoolne on kogu rea vasakpoolne.
-                console.log("Sorteerin teistrida");
-                console.log(teinerida);
-                pointer1=0;
-                pointer2=teinerida.length-1;
-                Sort(teinerida, Math.floor(teinerida.length/2), 0, teinerida.length-1, shift);
-            }
-        }
-        else{valmisrida()}
+async function Sort(rida, pivot, pointerüks, pointerkaks, shift){ // Sorteerimine ise
+    await new Promise(r => setTimeout(r, speed));
+    console.log(rida[pivot]);
+    console.log(shift);
+    if(pointerüks >= pointerkaks){ // Sel juhul on sorteerimine selleks korraks otsas. Jätkub rekursioon.
+        divide(rida, pivot, shift)
     }
-
     else if(rida[pointerüks]>=rida[pivot] && rida[pivot]>=rida[pointerkaks] && rida[pointerüks]!=rida[pointerkaks]){ // Sel juhul need vahetatakse. See on kogu sorteerimise alus.
         console.log("Jõudsin siia 1")
         var žonglöör = rida[pointerkaks];
         rida[pointerkaks] = rida[pointerüks];
         rida[pointerüks] = žonglöör;
-        console.log(rida)
-        document.getElementById(pointerüks+shift).innerHTML = '<h1>' + rida[pointerüks] + '</h1>'; // Ma arvan, et getElementById ei kannata oma sulgude sees tehteid ega arvutusi. Parandada!
+        console.log(rida);
+        document.getElementById(pointerüks+shift).innerHTML = '<h1>' + rida[pointerüks] + '</h1>';
         document.getElementById(pointerkaks+shift).innerHTML = '<h1>' + rida[pointerkaks] + '</h1>';
         if(pivot==pointerkaks){ // Pivoti staatus liigub tema endaga muidugi kaasa.
             discolour(pivot, shift);
@@ -127,8 +107,8 @@ function Sort(rida, pivot, pointerüks, pointerkaks, shift){ // Sorteerimine ise
             movepointer(pointerüks, shift);
         }
         console.log("Sorteerin");
-        Sort(rida, pivot, pointer1, pointer2);
-        } else if(rida[pointerüks]<rida[pivot]){
+        Sort(rida, pivot, pointer1, pointer2, shift);
+        } else if(rida[pointerüks]<=rida[pivot]){
             console.log("Jõudsin siia 4");
             movepointer(pointerüks, shift);
             console.log("Sorteerin");
@@ -136,25 +116,54 @@ function Sort(rida, pivot, pointerüks, pointerkaks, shift){ // Sorteerimine ise
         }
 }
 
+// Jagab osaliselt sorteeritud rea kaheks alamreaks
+function divide(rida, pivot, shift){
+    console.log("Jõudsin siia 0")
+        var uusrida = rida.slice(pivot+1); // Ma pean pointereid liigutama.
+        var teinerida = rida.slice(0, pivot);
+        pivotready(pivot)
+        if (uusrida.length>1 || teinerida.length>1){
+            if(uusrida.length>1){
+                console.log("Sorteerin uutrida");
+                console.log(uusrida);
+                pointer1=0;
+                pointer2=uusrida.length-1;
+                Sort(uusrida, Math.floor(uusrida.length/2), 0, uusrida.length-1, shift+teinerida.length+1); // Shift suureneb: paremal pool oleva rea pointerite ja pivoti visualiseerimine käib rohkem paremal. Märkus: teinerida.length+1 on see õige nihe, mida kasutada, et visuaal oleks õige.
+            } else {valmisrida(uusrida.length, shift)}
+            if(teinerida.length>1){ // Siinpool on lihtne, sest kõik toimub ikka vasakul ja teiserea vasakpoolne on kogu rea vasakpoolne.
+                console.log("Sorteerin teistrida");
+                console.log(teinerida);
+                pointer1=0;
+                pointer2=teinerida.length-1;
+                Sort(teinerida, Math.floor(teinerida.length/2), 0, teinerida.length-1, shift);
+            } else {valmisrida(teinerida.length, shift)}
+        }
+}
+
 // Värvib ruudu, mis on pivot või pointer.
-function colour(element, shift){
-    if (element==pivot){
+async function colour(element, shift){
+    var tile = document.getElementById(element+shift);
+    if(element==pointer1 || element==pointer2){
+        if(element==pivot){ // Kui ta on mõlemad, tuleb vahepealne värv.
+            tile.style.backgroundColor = "rgb(85,0,85)";
+        } else {tile.style.backgroundColor = "rgb(140,0,30)"} // Muidu tuleb pointeri värv.
+    } else if(element==pivot){tile.style.backgroundColor = "rgb(30,0,140)"}
+    await new Promise(r => setTimeout(r, speed));
+}
+// Eemaldab ruudu värvi.
+async function discolour(element, shift){
+    if((pivot==pointer1 && element==pointer1) || (pivot==pointer2 && element==pointer2)){
         var tile = document.getElementById(element+shift);
         tile.style.backgroundColor = "rgb(30,0,140)";
-    } else if(element==pointer1 || element==pointer2){
-        var tile = document.getElementById(element+shift);
-        tile.style.backgroundColor = "rgb(140,0,30)";
+    } else {
+    var tile = document.getElementById(element+shift);
+    tile.style.backgroundColor = "rgb(15,26,38)";
+    await new Promise(r => setTimeout(r, speed));
     }
 }
 
-// Eemaldab ruudu värvi.
-function discolour(element, shift){
-    var tile = document.getElementById(element+shift);
-    tile.style.backgroundColor = "rgb(15,26,38)";
-}
-
 // Liigutab pointereid.
-function movepointer(pointer, shift){
+async function movepointer(pointer, shift){
     if (pointer==pointer1){
         discolour(pointer1, shift);
         pointer1 = pointer1+1;
@@ -164,12 +173,21 @@ function movepointer(pointer, shift){
         pointer2 = pointer2-1;
         colour(pointer2, shift);
     }
+    await new Promise(r => setTimeout(r, speed));
 }
 
 // Kui sorteerimine saab valmis
-function valmisrida(){
-    for(let i=0; i<gridWidth; i++){
+async function valmisrida(rida, shift){
+    for(let i=shift; i<rida; i++){
         var tile = document.getElementById(i);
         tile.style.backgroundColor = "rgb(0,128,0)";
     }
+    await new Promise(r => setTimeout(r, speed));
+}
+
+// Teeb ühe paigas elemendi roheliseks
+async function pivotready(pivot){
+    var tile = document.getElementById(pivot);
+    tile.style.backgroundColor = "rgb(0,128,0)";
+    await new Promise(r => setTimeout(r, speed))
 }
