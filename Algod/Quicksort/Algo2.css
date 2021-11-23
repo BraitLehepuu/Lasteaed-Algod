@@ -34,3 +34,8 @@
     background-color: #0f1a26;
     transition: background-color 200ms ease-in-out;
 }
+
+.tile_ready{
+    background-color: #008000;
+    transition: background-color 200ms ease-in-out
+}
