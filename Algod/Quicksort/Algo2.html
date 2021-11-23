@@ -1,10 +1,13 @@
-<!DOCTYh1E html>
-<html>
-    <head>
+<!DOCTYPE html>
+<html lang="et">
+<meta charset="UTF-8" lang="et">
         <link rel="stylesheet" href="../ühine.css">
         <link rel="stylesheet" href="../nav-bar.css">
+        <link rel="stylesheet" href="./Algo2.css">
+    <title>Quicksort</title>
+    <script src="./Algo2.js"></script>
     </head>
-    <body>
+    <body onload="SetUp()">
         <div class="bar">
             <div class="bar_button" onclick="location.href='../avaleht.html'"> <h1>Avaleht</h1> </div>
             <div class="bar_button" onclick="location.href='../Bubblesort/Algo1.html'"> <h1>Bubble sort</h1> </div>
@@ -13,9 +16,21 @@
         </div>
 
         <div id="algorithm_container"></div>
+            <div id="grid_container">
+        </div>
+
+        <div class="controls_container">
+            <div class="button" onclick="Quicksort()"><p>Start</p></div>
+            <div class="input"><input onchange="OnSpeedChanged(this.value)" type="text" placeholder="Sammu pikkus (ms)"></div>
+            <div class="button" onclick="SetUp()"><p>Restart</p></div>
+        </div>
 
         <div class="text_container">
-            <p>Tekst algoritmi kohta läheb siia</p>
+            <p>Quicksort on sorteerimisalgoritm, mis töötab jaga-ja-valitse (divide-and-conquer) põhimõttel. Algoritm valib sorteerimata reas ühe elemendi, mida kasutab etalonina (pivot), viib kõik temast väiksemad elemendid ühele ja suuremad teisele poole ning jätkab tööd rekursiivselt, kuni kõik elemendid on sorteeritud.</p>
+            <p>Quicksort kasutab elementide asukohtade vahetamiseks reas kahte pointerit, mille osutatavad elemendid vahetuvad, kui vasakpoolne on pivotist suurem ja parempoolne on väiksem. Pointerid liiguvad reas järjest üksteise poole.</p>
+            <p>Kui pointerid kohtuvad, algab sorteerimine uuesti eraldi pivotist vasakul asuva poole peal ning parema poole peal. Lõpus pannakse tekkinud sorteeritud lõigud kokku.</p>
+            <p>Quicksort on keerulisem ja kiirem kui Bubblesort: kui Bubblesortil kulub n elemendi sorteerimiseks keskmiselt nn võrdlemist, siis Quicksortil kulub keskmiselt n log n võrdlemist.</p>
+            <p>Quicksortiga on lähemalt võimalik tutvuda <a href="https://en.wikipedia.org/wiki/Quicksort">sellel aadressil.</a></p>
         </div>
     </body>
 </html>
