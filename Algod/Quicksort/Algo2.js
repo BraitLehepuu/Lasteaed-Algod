@@ -50,10 +50,7 @@ function OnSpeedChanged(value){speed = value}
 // ALGORITMIGA SEOTUD KOOD
 // --------------------------------------------------------------------------------------------------------------------------------------------------
 
-// Alustab algoritmiga
-function StartQuicksort(){Quicksort()}
-
-// Quicksort-algoritm ise. Konsooli tulevad debugimiseks vajalikud asjad ehk mis klausleid programm läbib ja mis järjekorras.
+// Algoritmiga alustamine. Konsooli tulevad debugimiseks vajalikud asjad ehk mis klausleid programm läbib ja mis järjekorras.
 function Quicksort(){
 
     // Algsed muutujad ja nende väärtused
@@ -64,7 +61,7 @@ function Quicksort(){
     }
     console.log(rida)
     pivot = Math.floor((rida.length)/2-1);
-    näitemäng.push([N1, pivot, 0])
+    näitemäng.push([N1, pivot, 0]) // Tekitab näitemängu protsessi odava visuaalse kujutise.
     pointer1 = 0;
     pointer2 = rida.length-1; // Ma ei salli nende semikoolonite rohkust kohe üldse.
     näitemäng.push([N2, pointer1, pointer2, 0])
@@ -73,7 +70,8 @@ function Quicksort(){
     näitemängurakendus();
 } // Sorteerimisfunktsioon on rekursiivne, aga selle päises ei tohiks kogu aeg uusi muutujaid deklareerida.
 
-function Sort(rida, pivot, pointerüks, pointerkaks, shift){ // Sorteerimine ise
+// Sorteerimine ise
+function Sort(rida, pivot, pointerüks, pointerkaks, shift){
     console.log(rida[pivot]);
     console.log(shift);
     if(pointerüks >= pointerkaks){ // Sel juhul on sorteerimine selleks korraks otsas. Jätkub rekursioon.
@@ -110,7 +108,7 @@ function Sort(rida, pivot, pointerüks, pointerkaks, shift){ // Sorteerimine ise
 // Jagab osaliselt sorteeritud rea kaheks alamreaks
 function divide(rida, pivot, shift){
     console.log("Jõudsin siia 0")
-        var uusrida = rida.slice(pivot+1); // Ma pean pointereid liigutama.
+        var uusrida = rida.slice(pivot+1);
         var teinerida = rida.slice(0, pivot);
         if (uusrida.length>1){
                 console.log("Sorteerin uutrida");
@@ -147,7 +145,7 @@ async function movepointer(pointer, shift){
 }
 
 // VISUAALI TOIMIMINE
-// ----------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Mängib sellesama protsessi visuaali peal läbi, ainult et vahedega, nagu viisakas on.
 async function näitemängurakendus(){
@@ -219,5 +217,5 @@ function N4(pointer1, pointer2, arv1, arv2, shift){ // arv1 on see, millele poin
     }   
 }
 
-// 5. Pivot muutub roheliseks. Siinkohal on pointerid alati kohtunud või on pivot rea ainus element.
+// 5. Pivot muutub roheliseks. Siinkohal on pointerid (peaaegu) alati kohtunud või on pivot rea ainus element.
 function N5(pivot, shift){document.getElementById(pivot+shift).style.backgroundColor = "rgb(0,128,0)"}
