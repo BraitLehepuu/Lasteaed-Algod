@@ -55,18 +55,20 @@ function Quicksort(){
 
     // Algsed muutujad ja nende väärtused
     var rida = []; // Siia me lisame sorteeritavad arvud.
-    for(var arv = 0; arv < gridWidth; arv++){ // Genereerime arvud juhuslikult, need on ühest sajani.
-        rida.push(Math.floor(Math.random()*100)+1);
+    for(var arv = 0; arv < gridWidth; arv++){ // Genereerime arvud juhuslikult, need on ühest sajani ega võrdu iial.
+        uusarv = Math.floor(Math.random()*100)+1
+        while(rida.includes(uusarv)){uusarv = Math.floor(Math.random()*100)+1} // Kui see arv on juba reas, valime ritta panemiseks mõne muu arvu.
+        rida.push(uusarv);
         document.getElementById(arv).innerHTML = '<h1>' + rida[arv] + '</h1>'; // Asetab arvud visuaalselt ritta. Need on sorteerimata.
     }
     console.log(rida)
     pivot = Math.floor((rida.length)/2-1);
-    näitemäng.push([N1, pivot, 0]) // Tekitab näitemängu protsessi odava visuaalse kujutise.
+    näitemäng.push([N1, pivot, 0]) // Tekitab näitemängu protsessi odava visuaalse kujutise. Neid käske on allpool veel.
     pointer1 = 0;
     pointer2 = rida.length-1; // Ma ei salli nende semikoolonite rohkust kohe üldse.
     näitemäng.push([N2, pointer1, pointer2, 0])
     Sort(rida, pivot, pointer1, pointer2, 0);
-    console.log(näitemäng)
+    console.log(näitemäng) // Pärast sorteerimise lõppemist ühes oma paljude rekursioonidega mängib protsessi visuaali peal läbi.
     näitemängurakendus();
 } // Sorteerimisfunktsioon on rekursiivne, aga selle päises ei tohiks kogu aeg uusi muutujaid deklareerida.
 
@@ -75,7 +77,7 @@ function Sort(rida, pivot, pointerüks, pointerkaks, shift){
     console.log(rida[pivot]);
     console.log(shift);
     if(pointerüks >= pointerkaks){ // Sel juhul on sorteerimine selleks korraks otsas. Jätkub rekursioon.
-        näitemäng.push([N5, pivot, shift])
+        näitemäng.push([N5, pivot, pointer1, pointer2, shift])
         divide(rida, pivot, shift)
     }
     else if(rida[pointerüks]>=rida[pivot] && rida[pivot]>=rida[pointerkaks] && rida[pointerüks]!=rida[pointerkaks]){ // Sel juhul need vahetatakse. See on kogu sorteerimise alus.
@@ -91,7 +93,7 @@ function Sort(rida, pivot, pointerüks, pointerkaks, shift){
     } else if((rida[pivot]<rida[pointerkaks])){ // Ja muidu ta neid ei vaheta, liigub lihtsalt edasi.
         console.log("Jõudsin siia 2");
         movepointer(pointerkaks, shift);
-        if(rida[pointer1]<rida[pivot]){
+        if(rida[pointerüks]<rida[pivot]){
             console.log("Jõudsin siia 3");
             movepointer(pointerüks, shift);
         }
@@ -119,7 +121,7 @@ function divide(rida, pivot, shift){
                 pointer2=uusrida.length-1;
                 näitemäng.push([N2, pointer1, pointer2, shift+teinerida.length+1]);
                 Sort(uusrida, pivot, pointer1, pointer2, shift+teinerida.length+1); // Shift suureneb: paremal pool oleva rea pointerite ja pivoti visualiseerimine käib rohkem paremal. Märkus: teinerida.length+1 on see õige nihe, mida kasutada, et visuaal oleks õige.
-            } else if(uusrida.length==1){näitemäng.push([N5, 0, shift+teinerida.length+1])}
+            } else if(uusrida.length==1){näitemäng.push([N5, 0, 0, 0, shift+teinerida.length+1])}
         if (teinerida.length>1){        
                 console.log("Sorteerin teistrida");
                 console.log(teinerida);
@@ -129,7 +131,7 @@ function divide(rida, pivot, shift){
                 pointer2=teinerida.length-1;
                 näitemäng.push([N2, pointer1, pointer2, shift])
                 Sort(teinerida, pivot, pointer1, pointer2, shift); // Siinpool on lihtne, sest kõik toimub ikka vasakul ja teiserea vasakpoolne on kogu rea vasakpoolne.
-        } else if(teinerida.length==1){näitemäng.push([N5, 0, shift])}
+        } else if(teinerida.length==1){näitemäng.push([N5, 0, 0, 0, shift])}
 } // Ma vist jätan need konsoolilogid ikka alles, äkki läheb vaja.
 
 // Liigutab pointereid
@@ -151,12 +153,14 @@ async function movepointer(pointer, shift){
 async function näitemängurakendus(){
     for(N=0; N<näitemäng.length; N++){
         await new Promise(r => setTimeout(r, speed))
-        if(näitemäng[N][0]==N1 || näitemäng[N][0]==N5){ // Need if-klauslid selgitavad, mitu argumenti kutsutavale funktsioonile anda tuleb.
-            näitemäng[N][0](näitemäng[N][1], näitemäng[N][2]);
+        if(näitemäng[N][0]==N1){ // Need if-klauslid selgitavad, mitu argumenti kutsutavale funktsioonile anda tuleb.
+            N1(näitemäng[N][1], näitemäng[N][2]);
         } else if(näitemäng[N][0]==N2 || näitemäng[N][0]==N3){
             näitemäng[N][0](näitemäng[N][1], näitemäng[N][2], näitemäng[N][3]);
         } else if(näitemäng[N][0]==N4){
             N4(näitemäng[N][1], näitemäng[N][2], näitemäng[N][3], näitemäng[N][4], näitemäng[N][5]);
+        } else if(näitemäng[N][0]==N5){
+            N5(näitemäng[N][1], näitemäng[N][2], näitemäng[N][3], näitemäng[N][4])
         }
     }
 }
@@ -170,7 +174,6 @@ function N1(pivot, shift){
 // 2. Valitakse pointerid. Pointer võib sattuda kohe pivoti peale.
 function N2(pointer1, pointer2, shift){
     var tile = document.getElementById(pointer1+shift);
-    console.log(tile)
     if(tile.style.backgroundColor=="rgb(30, 0, 140)" || tile.style.backgroundColor=="rgb(85, 0, 85)"){
         tile.style.backgroundColor = "rgb(85,0,85)";
     } else {tile.style.backgroundColor = "rgb(140,0,30)"}
@@ -217,5 +220,9 @@ function N4(pointer1, pointer2, arv1, arv2, shift){ // arv1 on see, millele poin
     }   
 }
 
-// 5. Pivot muutub roheliseks. Siinkohal on pointerid (peaaegu) alati kohtunud või on pivot rea ainus element.
-function N5(pivot, shift){document.getElementById(pivot+shift).style.backgroundColor = "rgb(0,128,0)"}
+// 5. Pivot muutub roheliseks ja pointerid kaovad. Siinkohal on pointerid kohtunud või on pivot rea ainus element.
+function N5(pivot, pointer1, pointer2, shift){
+    document.getElementById(pointer1+shift).style.backgroundColor = "rgb(15,26,38)";
+    document.getElementById(pointer2+shift).style.backgroundColor = "rgb(15,26,38)";
+    document.getElementById(pivot+shift).style.backgroundColor = "rgb(0,128,0)";
+}
