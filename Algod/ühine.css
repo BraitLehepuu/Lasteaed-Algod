@@ -31,6 +31,10 @@ h1{
     margin: 0px;
 }
 
+a{
+    color: #e9dcc9;
+}
+
 .algorithm_container{
     width: 80vw;
     height: 60vh;
@@ -102,4 +106,62 @@ input{
     transition: background-color 100ms ease-in-out;
     margin: 0px;
     padding: 0px;
+}
+
+.welcome-box{
+    display: flex;
+    flex-direction: column;
+    height:20vh;
+    width: 95%;
+    margin-top: 50px;
+    font-size: 20px;
+    border-bottom-width: 10px;
+    border-style: solid;
+    border-color: #e5ab09;
+    border-radius: 10px;
+    align-items: center;
+}
+
+.main-text-box{
+    width: 80%;
+    height: 80vh;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    justify-items: left;
+    text-align: justify;
+    font-size: 20px;
+
+}
+
+.main-text{
+    margin-top: 50px;
+    width: 100%; 
+    border-bottom-width: 10px; 
+    border-style: solid; 
+    border-color: #e5ab09;
+    padding: 10px;
+}
+
+.picture-container{
+    display: grid; 
+    grid-template-columns: auto auto;
+    text-align: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.introduction-box{
+    margin-left: 100px; 
+    margin-top: 50px; 
+    width: 80%; 
+    height: 88vh;
+    border-bottom-width: 10px; 
+    border-style: solid; 
+    border-color: #e5ab09;
+    padding: 10px;
+}
+
+.pic-name{
+    margin-left: 10px; 
+    text-decoration: underline;
 }

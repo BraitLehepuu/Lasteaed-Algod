@@ -7,6 +7,7 @@ var ms = 1000
 var cycle = 1
 var restart = false
 var solving = false
+var solved = false
 
 
 
@@ -59,8 +60,14 @@ async function Bubblesort(array){
         cycle += 1
         document.getElementById('cycles').innerHTML = '<div id="cycle"><p>Tsükkel nr.' + cycle + '</p></div>'
     }
+    j = 0
+    for(num in array_){
+        document.getElementById(j).innerHTML = '<div class="tile_solved" id="' + j + '"><h1>' + num + '</h1></div>'
+        j += 1
+    }
     document.getElementById('cycles').innerHTML = '<div id="cycle"><p>Lahendamiseks kulus ' + cycle + ' tsüklit</p></div>'
     solving = false
+    solved = true
 }   
 
 
@@ -98,6 +105,9 @@ function StartSort(){
     if(solving){
         return
     }
+    if(solved){
+        return
+    }
     solving = true
     restart = false
     document.getElementById('cycles').innerHTML = '<div id="cycle"><p>Tsükkel nr.' + cycle + '</p></div>'
@@ -125,6 +135,7 @@ async function ShowStep(index, swap){
 
 function Restart(){
     solving = false
+    solved = false
     row_exists = false
     cycle = 1
     restart = true

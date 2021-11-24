@@ -52,6 +52,21 @@
     background-color: rgb(211, 21, 21);
 }
 
+.tile_solved{
+    border-width: 5px;
+    border-radius: 50%;
+    margin: 0px;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    text-align: center;
+    vertical-align: middle;
+    display: flex;
+    justify-content: center;
+    user-select: none;
+    background-color: #183350;
+}
+
 .algorithm_container2{
     width: 80vw;
     height: 60vh;
